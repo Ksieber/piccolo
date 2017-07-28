@@ -82,9 +82,9 @@ read.pics <- function(x){
 ## Example: myCredSet <- download.pics(rsid="rs6795744", pvalue = "20")
 ### options:
 ### rsid = SNP rsID 
-### pvalue = -log(pvalue). Example GWAS pvalue 1E^-20 means use pvalue=20
+### pvalue = -log(pvalue) or full GWAS pval. Examples: "1E-20", "1e-20", "20"
 ### ancestry = [EUR, ASN, AFR] Default = EUR
-### output = Full path and name for the download. Default = temporary file.
+### output = Full path and name for the download to be saved. Default = temporary file in memory.
 
 download.pics <- function(rsid, pvalue, ancestry = "EUR", output = NA, override = FALSE){
   stopifnot(exists("rsid") & exists("pvalue"))
