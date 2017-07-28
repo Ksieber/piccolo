@@ -1,4 +1,3 @@
-warning(paste("If you are behind a firewall and plan to use download.pics() make sure to set RCurlOptions","Example: options(RCurlOptions = list(proxy=\"gskproxy.gsk.com:800\", proxyuserpwd=\"USER:PW\", useragent = \"R-coloc.pics\"))", sep="\n"), call. = FALSE)
 #######################################################################
 ## This code enables users to get PICS credible sets for nearly any SNP with an index pvalue
 ## Then users can test if the signals driving the two associations colocalize
@@ -9,7 +8,9 @@ warning(paste("If you are behind a firewall and plan to use download.pics() make
 ####R> myColoc <- coloc.pics(gwas.credSet, eQTL.credSet)
 
 ## Note: more info for each function below
-
+warning(paste("If you are behind a firewall and plan to use download.pics() make sure to set RCurlOptions","Example: options(RCurlOptions = list(proxy=\"gskproxy.gsk.com:800\", proxyuserpwd=\"USER:PW\", useragent = \"R-coloc.pics\"))", sep="\n"), call. = FALSE)
+require(data.table)
+require(RCurl)
 #######################################################################
 # coloc.pics : Test for colocalization of two PICS sets
 ## Example: myColoc <- coloc.pics(gwas.credSet, eQTL.credSet)
@@ -59,7 +60,6 @@ coloc.pics <- function(data1,
 # read.pics : load a PICs file that was either download from the website (copy+paste to a text file) or a saved output from download.pics(output=X)
 ## Example: myCredSet <- read.pics("/full/path/to/PICs_credSet.txt")
 read.pics <- function(x){
-  require(data.table)
   stopifnot(exists("x"))
   stopifnot(file.exists(x))
   # Pull the first 3 lines to check if this file was downloaded with wget (has fluff header) or was copy+pasted from gui (no fluff header)
@@ -87,7 +87,6 @@ read.pics <- function(x){
 ### output = Full path and name for the download. Default = temporary file.
 
 download.pics <- function(rsid, pvalue, ancestry = "EUR", output = NA, override = FALSE){
-  require(RCurl)
   stopifnot(exists("rsid") & exists("pvalue"))
   if(grepl("\\d+e\\-", "12", ignore.case =TRUE)){
     sub("\\d+e\\-(\\d+)$", "\\1", pvalue, ignore.case =TRUE)
