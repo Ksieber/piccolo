@@ -89,6 +89,9 @@ read.pics <- function(x){
 download.pics <- function(rsid, pvalue, ancestry = "EUR", output = NA, override = FALSE){
   require(RCurl)
   stopifnot(exists("rsid") & exists("pvalue"))
+  if(grepl("\\d+e\\-", "12", ignore.case =TRUE)){
+    sub("\\d+e\\-(\\d+)$", "\\1", pvalue, ignore.case =TRUE)
+  }
   picsFile <- if(!is.na(output)) output else tempfile() 
   f <- CFILE(picsFile, mode="wb")
   url <- paste('http://pubs.broadinstitute.org/cgi-bin/finemapping/picscgi.pl?command1=', rsid, '&command2=', pvalue, '&command3=', ancestry, sep = "")
