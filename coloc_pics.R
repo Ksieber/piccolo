@@ -177,8 +177,8 @@ coloc.pics.lite <- function(data1,
   pp2 <- if (opts$pics1==opts$pics2) paste(opts$pics2, ".2", sep = "") else opts$pics2
   colnames(tmp) <- c(pp1, pp2)
   for(n in 1:length(ids)){
-    tmp[[pp1]][n] <- if(!is.na(match(ids[n], data1[[opts$rsid1]]))) data1[which(data1[[opts$rsid1]]==ids[n]),][[opts$pics1]] else 0
-    tmp[[pp2]][n] <- if(!is.na(match(ids[n], data2[[opts$rsid1]]))) data2[which(data2[[opts$rsid2]]==ids[n]),][[opts$pics2]] else 0 
+    tmp[[pp1]][n] <- if(!is.na(match(ids[n], data1[[opts$rsid1]]))) data1[which(data1[[opts$rsid1]]==ids[n]),][[opts$pics1]][1] else 0
+    tmp[[pp2]][n] <- if(!is.na(match(ids[n], data2[[opts$rsid1]]))) data2[which(data2[[opts$rsid2]]==ids[n]),][[opts$pics2]][1] else 0 
   }
   res <- as.data.frame(cbind(
     .norm1(tmp[[pp1]], log = FALSE),
