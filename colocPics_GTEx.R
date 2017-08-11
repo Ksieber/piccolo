@@ -1,4 +1,4 @@
-suppressMessages(library(optparse))
+suppressMessages(library(optparse, lib.loc="/home/kbs14104/R"))
 options(warn=0)
 
 option_list = list(
@@ -30,14 +30,13 @@ if (is.null(opt$output)) {
   stop("Must use --output=example.csv\n", call. = FALSE)
 }
 
-options(RCurlOptions=list(proxy="gskproxy.gsk.com:800", proxyuserpwd="kbs14104:pdPW#1.00"))
 suppressMessages(source("/home/kbs14104/scripts/coloc_pics/coloc_pics.R"))
-suppressMessages(library(RSQLite))
-suppressMessages(library(Homo.sapiens))
-suppressMessages(library(dplyr))
-suppressMessages(library(dtplyr))
-suppressMessages(library(biomaRt))
-suppressMessages(library(data.table))
+suppressMessages(library(RSQLite, lib.loc="/home/kbs14104/R"))
+suppressMessages(library(Homo.sapiens, lib.loc="/home/kbs14104/R"))
+suppressMessages(library(dplyr, lib.loc="/home/kbs14104/R"))
+suppressMessages(library(dtplyr, lib.loc="/home/kbs14104/R"))
+suppressMessages(library(biomaRt, lib.loc="/home/kbs14104/R"))
+suppressMessages(library(data.table, lib.loc="/home/kbs14104/R"))
 
 ensembl = useMart("ENSEMBL_MART_ENSEMBL", host = "grch37.ensembl.org", dataset = "hsapiens_gene_ensembl")
 snp_mart = useMart("ENSEMBL_MART_SNP", host = "grch37.ensembl.org", dataset="hsapiens_snp")

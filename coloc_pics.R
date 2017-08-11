@@ -8,8 +8,8 @@
 ####R> myColoc <- coloc.pics(gwas.credSet, eQTL.credSet)
 
 ## Note: more info for each function below
-suppressMessages(require(data.table))
-suppressMessages(require(RCurl))
+suppressMessages(library(data.table))
+suppressMessages(library(RCurl))
 if(options("warn")>0){
   warning(paste("If you are behind a firewall and plan to use download.pics() make sure to set RCurlOptions","Example: options(RCurlOptions = list(proxy=\"gskproxy.gsk.com:800\", proxyuserpwd=\"USER:PW\", useragent = \"R-coloc.pics\"))", sep="\n"), call. = FALSE)
 }
