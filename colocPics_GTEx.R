@@ -131,3 +131,4 @@ for(i in 1:dim(known.Loci)[1]){
 known.Loci.coloc <- known.Loci.coloc[!is.na(known.Loci.coloc$rsID),]
 
 write.csv(known.Loci.coloc, file=opt$output, row.names=FALSE, quote=FALSE)
+cat("FINISHED coloc analysis\n", sep="", file=stderr())
