@@ -62,11 +62,13 @@ for(i in 1:dim(known.Loci)[1]){
   cat("\tColocalizing ", known.Loci[i,]$rsID, " at ", known.Loci[i,]$pval, sep = "", file=stderr())
   # Determine ancestry for PICs
   ethnicity <- "EUR"
-  if( ("Ethnicity" %in% colnames(known.Loci)) & grepl("EAS", known.Loci[i,]$ethnicity)){
-    ethnicity <- "ASN"
-  }
-  else if ( ("Ethnicity" %in% colnames(known.Loci)) & grepl("AA", known.Loci[i,]$ethnicity)){
-    ethnicity <- "AFR"
+  if( ("ethnicity" %in% colnames(known.Loci)) ){
+    if (grepl("EAS", known.Loci[i,]$ethnicity)){
+      ethnicity <- "ASN"
+    }
+    else if (grepl("AA", known.Loci[i,]$ethnicity)){
+      ethnicity <- "AFR"
+    }
   }
   # Get & clean PICs from website for GWAS
   gwas.pics <- download.pics(rsid = known.Loci[i,]$rsID, pvalue = known.Loci[i,]$pval, ancestry = ethnicity)
