@@ -5,6 +5,7 @@ Then users can test if two genetic signals colocalize in a Bayesian framework.
 
 ## Example workflow:
 ```
+source("coloc_pics.R")
 gwas.credSet <- download.pics(rsid=rs123, pvalue=200)
 eQTL.credSet <- read.pics("/full/path/to/pics.txt")
 myColoc <- coloc.pics(gwas.credSet, eQTL.credSet)
@@ -64,3 +65,6 @@ Load a PICs file that was either download from the website (copy+paste to a text
 
 ## Known Bugs:  
  * If the rsID is not in the imputation used by PICs (1KGp1) then it returns the input rsID as the 1 causal SNP. This is almost certainly an erroneous credible set. This will also occur with rsIDs that do not exist. By default, download.pics() will skip *any* cred set with 1 causal SNP to avoid problems with missing/fake data. If you are certain that 1 causal SNP is correct for *a* locus, set override=TRUE in download.pics().  
+ 
+ ## colocPics_GTEx.R
+ This script will take input genetic signals and colocalize them with all GTEx eQTLs. This can only be run on the GSK filesystem currently. Use --help for options. 
