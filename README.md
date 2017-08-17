@@ -26,7 +26,8 @@ Test for colocalization of two PICS credible sets
 |priorc2  	  | Prior probability for colocalization with siganl for data2 | 1e-4 
 |priorc12 	  | Prior probability for colocalization of both signals.      | 1e-5   
 #### Note:   
- * Returns full coloc object. 
+ * Returns full coloc object.  
+ * Users only need to specify pics[1|2] & rsid[1|2] if they are using credible sets that are *not* from download.pics().  
  * For "lighter" dataframe returing *only* H3 & H4 posteriors use coloc.pics.lite() 
  * Adapted from [Toby Johnson's code](https://github.com/tobyjohnson/gtx/blob/master/R/abf.R "Toby's coloc in R"), which was adapted from [Giambartolomei et al. 2014](https://www.ncbi.nlm.nih.gov/pubmed/24830394 "Giambartolomei et al. 2014") colocalisation method  
 ***
@@ -41,15 +42,18 @@ Test for colocalization of two PICS credible sets
 ***
 
 
-## download.pics : Query the PICs website and get a PICs credible set for a SNP of interest
+## download.pics:  
+Query the [PICs website](http://pubs.broadinstitute.org/pubs/finemapping/ "PICs") and get a PICs credible set for a SNP of interest
 #### Example: `myCredSet <- download.pics(rsid="rs6795744", pvalue = "20")`
 #### Options:
 |Options	| Value | Default
 | --------- | ------------------------------------------------ | ----------------------------------- |
 |rsid 		| SNP rsID 						  				   | Example: rs1234
 |pvalue 	| -log(pvalue) or full GWAS pval. 				   | Examples: "1E-20", "1e-20", "20"
-|ancestry 	| [EUR, ASN, AFR] 				  				   | Default = EUR
-|output 	| Full path and name for the download to be saved. | Default = temporary file in memory.
+|ancestry 	| [EUR, ASN, AFR] 				  				   | EUR
+|output 	| Full path and name for the download to be saved. | held in memory
+#### Note:
+ * Returns a dataframe with default colnames as pic[1|2]="PICS_probability" & rsid[1|2]="Linked_SNP" that coloc.pics anticipates as default. 
 ***
 
 ## read.pics : 
