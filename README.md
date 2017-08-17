@@ -56,6 +56,10 @@ Query the [PICs website](http://pubs.broadinstitute.org/pubs/finemapping/ "PICs"
 |override | If TRUE, use cred sets with 1 causal SNP. *CAUTION* using this. Read below "Known Bugs". | FALSE
 #### Note:
  * Returns a dataframe with default colnames as pic[1|2]="PICS_probability" & rsid[1|2]="Linked_SNP" that coloc.pics anticipates as default. 
+ * For download.pics() to work behind a proxy use this code in an R session in your ~/.Renviron. 
+ ```
+ options(RCurlOptions = list(proxy="proxy.URL:PORT", proxyuserpwd="ID:PW", useragent = "R-coloc.pics"))
+ ```
 ***
 
 ## read.pics : 
