@@ -6,7 +6,8 @@ Then users can test if two genetic signals colocalize in a Bayesian framework.
 ## Example workflow:
 ```gwas.credSet <- download.pics(rsid=rs123, pvalue=200)
 eQTL.credSet <- read.pics("/full/path/to/pics.txt")
-myColoc <- coloc.pics(gwas.credSet, eQTL.credSet)```
+myColoc <- coloc.pics(gwas.credSet, eQTL.credSet)
+```
 ***
 
 
