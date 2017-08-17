@@ -52,6 +52,7 @@ Query the [PICs website](http://pubs.broadinstitute.org/pubs/finemapping/ "PICs"
 |pvalue 	| -log(pvalue) or full GWAS pval. 				   | Examples: "1E-20", "1e-20", "20"
 |ancestry 	| [EUR, ASN, AFR] 				  				   | EUR
 |output 	| Full path and name for the download to be saved. | held in memory
+|override | If TRUE, use cred sets with 1 causal SNP. *CAUTION* using this. Read below "Known Bugs". | FALSE
 #### Note:
  * Returns a dataframe with default colnames as pic[1|2]="PICS_probability" & rsid[1|2]="Linked_SNP" that coloc.pics anticipates as default. 
 ***
@@ -60,3 +61,6 @@ Query the [PICs website](http://pubs.broadinstitute.org/pubs/finemapping/ "PICs"
 Load a PICs file that was either download from the website (copy+paste to a text file) or a saved output from download.pics(output=X)
 #### Example: `myCredSet <- read.pics("/full/path/to/PICs_credSet.txt")`
 ***
+
+## Known Bugs:  
+ * If the rsID is not in the imputation used by PICs (1KGp1) then it returns the input rsID as the 1 causal SNP. This is almost certainly an erroneous credible set. This will also occur with rsIDs that do not exist. By default, download.pics() will skip *any* cred set with 1 causal SNP to avoid problems with missing/fake data. If you are certain that 1 causal SNP is correct for *a* locus, set override=TRUE in download.pics().  
