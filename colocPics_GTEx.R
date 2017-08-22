@@ -1,3 +1,10 @@
+#!/home/kbs14104/bin/Rscript
+readRenviron("~/.Renviron")
+.libPaths(c("/home/kbs14104/R/", 
+  "/home/kbs14104/R/x86_64-pc-linux-gnu-library/3.3", 
+  "/home/kbs14104/etc/R-3.3.3/library", 
+  .libPaths())
+)
 suppressMessages(library(optparse, lib.loc="/home/kbs14104/R"))
 options(warn=0)
 
@@ -30,13 +37,22 @@ if (is.null(opt$output)) {
   stop("Must use --output=example.csv\n", call. = FALSE)
 }
 
-suppressMessages(source("/home/kbs14104/scripts/coloc_pics/coloc_pics.R"))
+suppressMessages(library(data.table, lib.loc="/home/kbs14104/R"))
 suppressMessages(library(RSQLite, lib.loc="/home/kbs14104/R"))
+suppressMessages(library(BiocGenerics, lib.loc="/home/kbs14104/R"))
+suppressMessages(library(S4Vectors, lib.loc="/home/kbs14104/R"))
+suppressMessages(library(IRanges, lib.loc="/home/kbs14104/R"))
+suppressMessages(library(Biobase, lib.loc="/home/kbs14104/R"))
+suppressMessages(library(AnnotationDbi, lib.loc="/home/kbs14104/R"))
+suppressMessages(library(GenomeInfoDb, lib.loc="/home/kbs14104/R"))
+suppressMessages(library(GenomicRanges, lib.loc="/home/kbs14104/R"))
+suppressMessages(library(GenomicFeatures, lib.loc="/home/kbs14104/R"))
+suppressMessages(library(OrganismDbi, lib.loc="/home/kbs14104/R"))
 suppressMessages(library(Homo.sapiens, lib.loc="/home/kbs14104/R"))
 suppressMessages(library(dplyr, lib.loc="/home/kbs14104/R"))
 suppressMessages(library(dtplyr, lib.loc="/home/kbs14104/R"))
 suppressMessages(library(biomaRt, lib.loc="/home/kbs14104/R"))
-suppressMessages(library(data.table, lib.loc="/home/kbs14104/R"))
+suppressMessages(source("/home/kbs14104/scripts/coloc_pics/coloc_pics.R"))
 
 ensembl = useMart("ENSEMBL_MART_ENSEMBL", host = "grch37.ensembl.org", dataset = "hsapiens_gene_ensembl")
 snp_mart = useMart("ENSEMBL_MART_SNP", host = "grch37.ensembl.org", dataset="hsapiens_snp")
