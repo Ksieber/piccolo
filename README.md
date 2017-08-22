@@ -50,7 +50,7 @@ Query the [PICs website](http://pubs.broadinstitute.org/pubs/finemapping/ "PICs"
 |Options	| Value | Default
 | --------- | ------------------------------------------------ | ----------------------------------- |
 |rsid 		| SNP rsID 						  				   | Example: "rs1234"
-|pvalue 	| -log(pvalue). 				   | Examples: -log10(1.23E-45) or 45
+|pvalue 	| -log10(pvalue). 				   | Examples: -log10(1.23E-45) or 45
 |ancestry 	| [EUR, ASN, AFR] 				  				   | "EUR"
 |output 	| Full path and name for the download to be saved. | held in memory
 |override | If TRUE, use cred sets with 1 causal SNP. *CAUTION* using this. Read below "Known Bugs". | FALSE
