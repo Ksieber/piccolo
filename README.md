@@ -6,7 +6,7 @@ Then users can test if two genetic signals colocalize in a Bayesian framework.
 ## Example workflow:
 ```
 source("coloc_pics.R")
-gwas.credSet <- download.pics(rsid="rs123", pvalue="1.23E-45")
+gwas.credSet <- download.pics(rsid="rs123", pvalue=-log10(1.23E-45))
 eQTL.credSet <- read.pics("/full/path/to/pics.txt")
 myColoc <- coloc.pics(gwas.credSet, eQTL.credSet)
 ```
@@ -49,9 +49,9 @@ Query the [PICs website](http://pubs.broadinstitute.org/pubs/finemapping/ "PICs"
 #### Options:
 |Options	| Value | Default
 | --------- | ------------------------------------------------ | ----------------------------------- |
-|rsid 		| SNP rsID 						  				   | Example: rs1234
-|pvalue 	| -log(pvalue) or full GWAS pval. 				   | Examples: "1E-20", "1e-20", "20"
-|ancestry 	| [EUR, ASN, AFR] 				  				   | EUR
+|rsid 		| SNP rsID 						  				   | Example: "rs1234"
+|pvalue 	| -log10(pvalue). 				   | Examples: -log10(1.23E-45) or 45
+|ancestry 	| [EUR, ASN, AFR] 				  				   | "EUR"
 |output 	| Full path and name for the download to be saved. | held in memory
 |override | If TRUE, use cred sets with 1 causal SNP. *CAUTION* using this. Read below "Known Bugs". | FALSE
 #### Note:
