@@ -58,7 +58,10 @@ ensembl = useMart("ENSEMBL_MART_ENSEMBL", host = "grch37.ensembl.org", dataset =
 snp_mart = useMart("ENSEMBL_MART_SNP", host = "grch37.ensembl.org", dataset="hsapiens_snp")
 snp_attributes = c("refsnp_id", "chr_name", "chrom_start", "chrom_end" )
 
-eqtl.files <- read.table(file="/GWD/appbase/projects/statgen3/PICS_sets/ToolVariant_cred-sets/all_eQTLs_filePaths_table.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE)
+eqtl.files <- read.table(file="/GWD/appbase/projects/statgen3/PICS_sets/ToolVariant_cred-sets/all_eQTLs_filePaths_table.csv", 
+                         header = TRUE, 
+                         sep = ",", 
+                         stringsAsFactors = FALSE)
 eqtl.files <- as.data.table(eqtl.files)
 setkey(eqtl.files, geneID)
 eqtl.tissues <- unique(eqtl.files[["tissue"]])
