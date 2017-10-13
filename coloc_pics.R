@@ -90,8 +90,8 @@ read.pics <- function(x){
 
 download.pics <- function(rsid, pvalue, ancestry = "EUR", output = NA, override = FALSE){
   stopifnot(exists("rsid") & exists("pvalue"))
-  if(grepl("\\d+e\\-", "12", ignore.case =TRUE)){
-    sub("\\d+e\\-(\\d+)$", "\\1", pvalue, ignore.case =TRUE)
+  if(grepl("\\d\\.?[eE]\\-\\d+", pvalue, perl=TRUE)){
+    pvalue <- -log10(pvalue)
   }
   picsFile <- if(!is.na(output)) output else tempfile() 
   f <- CFILE(picsFile, mode="wb")
