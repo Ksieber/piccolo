@@ -54,11 +54,12 @@ suppressMessages(library(dtplyr, lib.loc="/home/kbs14104/R"))
 suppressMessages(library(biomaRt, lib.loc="/home/kbs14104/R"))
 suppressMessages(source("/home/kbs14104/scripts/coloc_pics/coloc_pics.R"))
 
-ensembl = useMart("ENSEMBL_MART_ENSEMBL", host = "grch37.ensembl.org", dataset = "hsapiens_gene_ensembl")
-snp_mart = useMart("ENSEMBL_MART_SNP", host = "grch37.ensembl.org", dataset="hsapiens_snp")
+ensembl = useMart("ENSEMBL_MART_ENSEMBL", dataset = "hsapiens_gene_ensembl")
+snp_mart = useMart("ENSEMBL_MART_SNP", dataset="hsapiens_snp")
 snp_attributes = c("refsnp_id", "chr_name", "chrom_start", "chrom_end" )
 
-eqtl.files <- read.table(file="/GWD/appbase/projects/statgen3/PICS_sets/ToolVariant_cred-sets/all_eQTLs_filePaths_table.csv", 
+eqtl.files <- read.table(file="/GWD/appbase/projects/RD-Genetic-INSiGHT/PICs_credSets/master_eQTL_PICCOLO_index.csv", 
+# eqtl.files <- read.table(file="/GWD/appbase/projects/statgen3/PICS_sets/ToolVariant_cred-sets/all_eQTLs_filePaths_table.csv", 
                          header = TRUE, 
                          sep = ",", 
                          stringsAsFactors = FALSE)
