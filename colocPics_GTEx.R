@@ -49,10 +49,9 @@ suppressMessages(library(GenomicRanges, lib.loc="/home/kbs14104/R"))
 suppressMessages(library(GenomicFeatures, lib.loc="/home/kbs14104/R"))
 suppressMessages(library(OrganismDbi, lib.loc="/home/kbs14104/R"))
 suppressMessages(library(Homo.sapiens, lib.loc="/home/kbs14104/R"))
-suppressMessages(library(dplyr, lib.loc="/home/kbs14104/R"))
-suppressMessages(library(dtplyr, lib.loc="/home/kbs14104/R"))
 suppressMessages(library(biomaRt, lib.loc="/home/kbs14104/R"))
 suppressMessages(source("/home/kbs14104/scripts/coloc_pics/coloc_pics.R"))
+suppressMessages(library(dplyr, lib.loc="/home/kbs14104/R"))
 
 ensembl = useMart("ENSEMBL_MART_ENSEMBL", dataset = "hsapiens_gene_ensembl", host = "grch37.ensembl.org")
 snp_mart = useMart("ENSEMBL_MART_SNP", dataset="hsapiens_snp", host = "grch37.ensembl.org")
@@ -97,6 +96,14 @@ for(i in 1:dim(known.Loci)[1]){
                     attributes=snp_attributes, 
                     filters="snp_filter", 
                     mart=snp_mart)
+  gwas_index_chr <- gwas.bed %>% filter(refsnp_id == known.Loci[i,]$rsID) %>% .$chr_name
+  gwas_index_pos <- gwas.bed %>% filter(refsnp_id == known.Loci[i,]$rsID) %>% .$chrom_start
+  # Filter to make sure there are no outlier SNPs returned by PICs (e.g., diff chrom or way too far away)
+  gwas.bed <- gwas.bed %>% 
+    filter(chr_name == gwas_index_chr) %>% 
+    filter(chrom_start > gwas_index_pos - 1e6 | chrom_end < gwas_index_pos + 1e6)
+  # Apply filtered gwas based on chr and position to PICs cred set 
+  gwas.pics <- dplyr::semi_join(gwas.pics, gwas.bed, by = c("Linked_SNP" = "refsnp_id"))
   colnames(gwas.bed)  <- c("rsID", "chr", "start", "end")
   gwas.bed$chr <- paste("chr", gwas.bed$chr, sep="")
   # Determine the region for +/- 500 kb

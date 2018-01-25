@@ -42,7 +42,7 @@ option_list = list(
   ),
     make_option(
     c("-c", "--cutoff"),
-    default = "0.95",
+    default = "1",
     type = "numeric",
     metavar = "(0:1]",
     help = "PICs cummalative probability"
