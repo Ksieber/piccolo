@@ -29,16 +29,28 @@ if(options("warn")>0){
 # Note: Adapted from Toby Johnson's code which was adapted from Giambartolomei et al. 2014 colocalisation method
 coloc.pics <- function(data1, 
                        data2,
-                       pics1 = "PICS_probability",
-                       pics2 = "PICS_probability",
-                       rsid1 = "Linked_SNP",
-                       rsid2 = "Linked_SNP",
+                       pics1    = "PICS_probability", # column header for poster probabilities in data1
+                       pics2    = "PICS_probability", # column header for poster probabilities in data2
+                       rsid1    = "Linked_SNP",       # column header for snps in LD in data1
+                       rsid2    = "Linked_SNP",       # column header for snps in LD in data2
                        rounded = 6,
                        priorc1 = 1e-4, 
                        priorc2 = 1e-4, 
                        priorc12 = 1e-5
                        ) {
   stopifnot(exists("data1") & exists("data2"))
+  if(is.logical(data1)){
+    if(is.na(data1)){
+      warning("coloc.pics WARNING: data1 is NA, skipping coloc.\n")
+      return(list(results = NA, nvariants = NA))
+    }
+  }
+  if(is.logical(data2)){
+    if(is.na(data2)){
+      warning("coloc.pics WARNING: data2 is NA, skipping coloc.\n")
+      return(list(results = NA, nvariants = NA))
+    }
+  }
   pics <- .harmonize.pics(data1, 
                           data2, 
                           opts <- data.frame(rsid1 = rsid1, rsid2 = rsid2, pics1 = pics1, pics2 = pics2, stringsAsFactors = FALSE))
@@ -101,7 +113,7 @@ download.pics <- function(rsid, pvalue, ancestry = "EUR", output = NA, override 
   res <- read.pics(picsFile)
   if(!length(res$Linked_SNP)>1 & !override){
     warning("PICs returned only 1 causal SNP. This is most likely b/c the query rsID wasn't in 1KGp1 used for PICs.\n To confirm that there is 1 causal SNP use the PICs website and HaploReg.\n If you are sure 1 causal SNP is correct, use override=TRUE")
-    return(NULL)
+    return(NA)
   }
   if (is.na(output)) unlink(picsFile)
   return(res)
@@ -120,19 +132,31 @@ download.pics <- function(rsid, pvalue, ancestry = "EUR", output = NA, override 
 ### priorc1  = Prior probability for colocalization with siganl for data1  Default = 1e-4
 ### priorc2  = Prior probability for colocalization with siganl for data2 Default = 1e-4
 ### priorc12 = Prior probability for colocalization of both signals.   Default = 1e-5
-# Note: Adapted from Toby Johnson's code which was adapted from Giambartolomei et al. 2014 colocalisation method
+# Note: Adapted from Toby Johnson's code, which was adapted from Giambartolomei et al. 2014 colocalisation method
 coloc.pics.lite <- function(data1, 
                        data2,
-                       pics1 = "PICS_probability",
-                       pics2 = "PICS_probability",
-                       rsid1 = "Linked_SNP",
-                       rsid2 = "Linked_SNP",
-                       rounded = 6,
-                       priorc1 = 1e-4, 
-                       priorc2 = 1e-4, 
+                       pics1    = "PICS_probability", # column header for poster probabilities in data1
+                       pics2    = "PICS_probability", # column header for poster probabilities in data2
+                       rsid1    = "Linked_SNP",       # column header for snps in LD in data1
+                       rsid2    = "Linked_SNP",       # column header for snps in LD in data2
+                       rounded  = 6,
+                       priorc1  = 1e-4, 
+                       priorc2  = 1e-4, 
                        priorc12 = 1e-5
 ) {
   stopifnot(exists("data1") & exists("data2"))
+  if(is.logical(data1)){
+    if(is.na(data1)){
+      warning("coloc.pics WARNING: data1 is NA, skipping coloc.\n")
+      return(data.frame(H3 = NA, H4 = NA))
+    }
+  }
+  if(is.logical(data2)){
+    if(is.na(data2)){
+      warning("coloc.pics WARNING: data2 is NA, skipping coloc.\n")
+      return(data.frame(H3 = NA, H4 = NA))
+    }
+  }
   pics <- .harmonize.pics(data1, 
                           data2, 
                           opts <- data.frame(rsid1 = rsid1, rsid2 = rsid2, pics1 = pics1, pics2 = pics2, stringsAsFactors = FALSE))

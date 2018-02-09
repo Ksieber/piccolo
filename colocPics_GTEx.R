@@ -80,11 +80,19 @@ for(i in 1:dim(known.Loci)[1]){
   cat("\tColocalizing ", known.Loci[i,]$rsID, " at ", known.Loci[i,]$pval, sep = "", file=stderr())
   # Determine ancestry for PICs
   ethnicity <- "EUR"
+  # if( ("ethnicity" %in% colnames(known.Loci)) ){
+  #   if (grepl("ASN", known.Loci[i,]$ethnicity)){
+  #     ethnicity <- "ASN"
+  #   }
+  #   else if (grepl("AFR", known.Loci[i,]$ethnicity)){ 
+  #     ethnicity <- "AFR"
+  #   }
+  # }
   if( ("ethnicity" %in% colnames(known.Loci)) ){
-    if (grepl("EAS", known.Loci[i,]$ethnicity)){
+    if (known.Loci[i,]$ethnicity == "ASN"){
       ethnicity <- "ASN"
     }
-    else if (grepl("AA", known.Loci[i,]$ethnicity)){
+    else if (known.Loci[i,]$ethnicity == "AFR"){ 
       ethnicity <- "AFR"
     }
   }
