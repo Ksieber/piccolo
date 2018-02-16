@@ -50,7 +50,7 @@ suppressMessages(library(GenomicFeatures, lib.loc="/home/kbs14104/R"))
 suppressMessages(library(OrganismDbi, lib.loc="/home/kbs14104/R"))
 suppressMessages(library(Homo.sapiens, lib.loc="/home/kbs14104/R"))
 suppressMessages(library(biomaRt, lib.loc="/home/kbs14104/R"))
-suppressMessages(source("/home/kbs14104/scripts/coloc_pics/coloc_pics.R"))
+suppressMessages(source("/GWD/appbase/projects/RD-Genetic-INSiGHT/PICCOLO/scripts/coloc_pics/coloc_pics.R"))
 suppressMessages(library(dplyr, lib.loc="/home/kbs14104/R"))
 
 ensembl = useMart("ENSEMBL_MART_ENSEMBL", dataset = "hsapiens_gene_ensembl", host = "grch37.ensembl.org")
