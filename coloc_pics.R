@@ -11,7 +11,8 @@
 suppressMessages(library(data.table))
 suppressMessages(library(RCurl))
 if(options("warn")>0){
-  warning(paste("If you are behind a firewall and plan to use download.pics() make sure to set RCurlOptions","Example: options(RCurlOptions = list(proxy=\"gskproxy.gsk.com:800\", proxyuserpwd=\"USER:PW\", useragent = \"R-coloc.pics\"))", sep="\n"), call. = FALSE)
+  warning("foobar");
+  warning(("If you are behind a firewall and plan to use download.pics() make sure to set RCurlOptions","Example: options(RCurlOptions = list(proxy=\"gskproxy.gsk.com:800\", proxyuserpwd=\"USER:PW\", useragent = \"R-coloc.pics\"))", sep="\n"), call. = FALSE)
 }
 #######################################################################
 # coloc.pics : Test for colocalization of two PICS sets
@@ -113,7 +114,7 @@ download.pics <- function(rsid, pvalue, ancestry = "EUR", output = NA, override 
   res <- read.pics(picsFile)
   if(!length(res$Linked_SNP)>1 & !override){
     if(options("warn")>0){
-      warning("PICs returned only 1 causal SNP. This is most likely b/c the query rsID wasn't in 1KGp1 used for PICs.\n To confirm that there is 1 causal SNP use the PICs website and HaploReg.\n If you are sure 1 causal SNP is correct, use override=TRUE");
+      warning("PICs returned only 1 causal SNP. This is most likely b/c the query rsID wasn't in 1KGp1 used for PICs.\n To confirm that there is 1 causal SNP use the PICs website and HaploReg.\n If you are sure 1 causal SNP is correct, use override=TRUE\n");
     }
     return(NA)
   }
