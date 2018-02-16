@@ -98,7 +98,21 @@ for(i in 1:dim(known.Loci)[1]){
   }
   # Get & clean PICs from website for GWAS
   gwas.pics <- download.pics(rsid = known.Loci[i,]$rsID, pvalue = known.Loci[i,]$pval, ancestry = ethnicity)
-  if(is.null(gwas.pics)){next}
+  # If there is NA returned, add NA to the ret data and move on
+  if(is.logical(gwas.pics)){
+    if(is.na(gwas.pics)){
+      warning("Warning: gwas_pics is NA, skipping coloc.\n")
+      known.Loci.coloc[r,] <- c(known.Loci[i,], 
+                                NA,  # tissue
+                                NA,  # index.rsid
+                                NA,  # hgnc_symbol
+                                NA,  # geneID
+                                NA,  # H3
+                                NA)  # H4
+      r <- r+1;
+      next;
+    }
+  }
   gwas.pics <- gwas.pics[grep("^rs", gwas.pics$Linked_SNP, perl = TRUE),]
   gwas.bed <- getBM(values=gwas.pics$Linked_SNP, 
                     attributes=snp_attributes, 

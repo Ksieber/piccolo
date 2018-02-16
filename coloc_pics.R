@@ -112,7 +112,9 @@ download.pics <- function(rsid, pvalue, ancestry = "EUR", output = NA, override 
   close(f)
   res <- read.pics(picsFile)
   if(!length(res$Linked_SNP)>1 & !override){
-    warning("PICs returned only 1 causal SNP. This is most likely b/c the query rsID wasn't in 1KGp1 used for PICs.\n To confirm that there is 1 causal SNP use the PICs website and HaploReg.\n If you are sure 1 causal SNP is correct, use override=TRUE")
+    if(options("warn")>0){
+      warning("PICs returned only 1 causal SNP. This is most likely b/c the query rsID wasn't in 1KGp1 used for PICs.\n To confirm that there is 1 causal SNP use the PICs website and HaploReg.\n If you are sure 1 causal SNP is correct, use override=TRUE");
+    }
     return(NA)
   }
   if (is.na(output)) unlink(picsFile)
@@ -147,13 +149,13 @@ coloc.pics.lite <- function(data1,
   stopifnot(exists("data1") & exists("data2"))
   if(is.logical(data1)){
     if(is.na(data1)){
-      warning("coloc.pics WARNING: data1 is NA, skipping coloc.\n")
+      if(options("warn")>0){warning("coloc.pics WARNING: data1 is NA, skipping coloc.\n");}
       return(data.frame(H3 = NA, H4 = NA))
     }
   }
   if(is.logical(data2)){
     if(is.na(data2)){
-      warning("coloc.pics WARNING: data2 is NA, skipping coloc.\n")
+      if(options("warn")>0){warning("coloc.pics WARNING: data2 is NA, skipping coloc.\n");}
       return(data.frame(H3 = NA, H4 = NA))
     }
   }
