@@ -101,7 +101,7 @@ for(i in 1:dim(known.Loci)[1]){
   # If there is NA returned, add NA to the ret data and move on
   if(is.logical(gwas.pics)){
     if(is.na(gwas.pics)){
-      warning("Warning: gwas_pics is NA, skipping coloc.\n")
+      cat("\n Warning: download.pics() for", known.Loci[i,]$rsID, "is NA, skipping coloc.\n", file = stderr());
       known.Loci.coloc[r,] <- c(known.Loci[i,], 
                                 NA,  # tissue
                                 NA,  # index.rsid
@@ -148,7 +148,10 @@ for(i in 1:dim(known.Loci)[1]){
   if(!length(credSet.genes$hgnc_symbol)>0){next}
   
   locus.eqtl.info <- na.omit(eqtl.files[.(credSet.genes$ensembl_gene_id)], cols="filePath")
-  if(!dim(locus.eqtl.info)[1]>=1){next}
+  if(!dim(locus.eqtl.info)[1]>=1){
+    cat("\n", sep="", file=stderr());
+    next;
+  }
 
   z <- 1
   for (e in 1:dim(locus.eqtl.info)[1]){

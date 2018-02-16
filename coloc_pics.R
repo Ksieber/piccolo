@@ -11,8 +11,7 @@
 suppressMessages(library(data.table))
 suppressMessages(library(RCurl))
 if(options("warn")>0){
-  warning("foobar");
-  warning(("If you are behind a firewall and plan to use download.pics() make sure to set RCurlOptions","Example: options(RCurlOptions = list(proxy=\"gskproxy.gsk.com:800\", proxyuserpwd=\"USER:PW\", useragent = \"R-coloc.pics\"))", sep="\n"), call. = FALSE)
+  warning("If you are behind a firewall and plan to use download.pics() make sure to set RCurlOptions\n  Example: options(RCurlOptions = list(proxy=\"gskproxy.gsk.com:800\", proxyuserpwd=\"USER:PW\", useragent = \"R-coloc.pics\"))");
 }
 #######################################################################
 # coloc.pics : Test for colocalization of two PICS sets
@@ -42,13 +41,13 @@ coloc.pics <- function(data1,
   stopifnot(exists("data1") & exists("data2"))
   if(is.logical(data1)){
     if(is.na(data1)){
-      warning("coloc.pics WARNING: data1 is NA, skipping coloc.\n")
+      warning("coloc.pics- data1 is NA, skipping coloc.\n")
       return(list(results = NA, nvariants = NA))
     }
   }
   if(is.logical(data2)){
     if(is.na(data2)){
-      warning("coloc.pics WARNING: data2 is NA, skipping coloc.\n")
+      warning("coloc.pics - data2 is NA, skipping coloc.\n")
       return(list(results = NA, nvariants = NA))
     }
   }
@@ -150,13 +149,13 @@ coloc.pics.lite <- function(data1,
   stopifnot(exists("data1") & exists("data2"))
   if(is.logical(data1)){
     if(is.na(data1)){
-      if(options("warn")>0){warning("coloc.pics WARNING: data1 is NA, skipping coloc.\n");}
+      if(options("warn")>0){warning("coloc.pics - data1 is NA, skipping coloc.\n");}
       return(data.frame(H3 = NA, H4 = NA))
     }
   }
   if(is.logical(data2)){
     if(is.na(data2)){
-      if(options("warn")>0){warning("coloc.pics WARNING: data2 is NA, skipping coloc.\n");}
+      if(options("warn")>0){warning("coloc.pics - data2 is NA, skipping coloc.\n");}
       return(data.frame(H3 = NA, H4 = NA))
     }
   }
