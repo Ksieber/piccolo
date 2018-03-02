@@ -92,6 +92,11 @@ if(!is.null(opt$input)){
   cat("\tCalculating PICs credible set\n", sep="", file=stderr())
   picsIn <- download.pics(rsid = opt$rsid, pvalue = -log10(opt$pval), ancestry = opt$ethnicity)
 }
+if(is.logical(picsIn)){
+  if(is.na(picsIn)){
+    stop(paste0("Unable to generates PICs for ", opt$rsid, "."), call. = FALSE);
+  }
+}
 
 picsIn <- filter(picsIn, cumsum(picsIn$PICS_probability)<=opt$cutoff)
 
