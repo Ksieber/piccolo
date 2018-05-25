@@ -1,33 +1,27 @@
-#######################################################################
-## This code enables users to get PICS credible sets for nearly any SNP with an index pvalue
-## Then users can test if the signals driving the two associations colocalize
-
-### Example workflow:
-####R> gwas.credSet <- download.pics(rsid=rs123, pvalue=200)
-####R> eQTL.credSet <- read.pics("/full/path/to/pics.txt")
-####R> myColoc <- coloc.pics(gwas.credSet, eQTL.credSet)
-
-## Note: more info for each function below
 suppressMessages(library(data.table))
 suppressMessages(library(RCurl))
 if(options("warn")>0){
-  warning("If you are behind a firewall and plan to use download.pics() make sure to set RCurlOptions\n  Example: options(RCurlOptions = list(proxy=\"gskproxy.gsk.com:800\", proxyuserpwd=\"USER:PW\", useragent = \"R-coloc.pics\"))");
+  warning("If you are behind a firewall and plan to use pics.download() make sure to set RCurlOptions\n  Example: options(RCurlOptions = list(proxy=\"gskproxy.gsk.com:800\", proxyuserpwd=\"USER:PW\"))");
 }
-#######################################################################
-# coloc.pics : Test for colocalization of two PICS sets
-## Example: myColoc <- coloc.pics(gwas.credSet, eQTL.credSet)
-## Returns full coloc object. 
-##      For "lighter" dataframe returing *only* H3 & H4 posteriors use coloc.pics.lite()
-## options:
-### data1, data2 = PICS sets from read.pics or download.pics
-### pics1, pics2 = column name to pull PICS prob from. Default = "PICS_probability"
-### rsid1, rsid2 = column name to pull rsid from.      Default = "Linked_SNP"
-### rounded  = [#] Decimal points to round posteriors to
-### priorc1  = Prior probability for colocalization with siganl for data1  Default = 1e-4
-### priorc2  = Prior probability for colocalization with siganl for data2 Default = 1e-4
-### priorc12 = Prior probability for colocalization of both signals.   Default = 1e-5
-# Note: Adapted from Toby Johnson's code which was adapted from Giambartolomei et al. 2014 colocalisation method
-coloc.pics <- function(data1, 
+#' pics.coloc : Test for colocalization of two PICS sets
+#' Adapted from [Toby Johnson's code](https://github.com/tobyjohnson/gtx/blob/master/R/abf.R "Toby's coloc in R")
+#' Which was adapted from [Giambartolomei et al. 2014](https://www.ncbi.nlm.nih.gov/pubmed/24830394 "Giambartolomei et al. 2014") colocalization method
+#' @examples 
+#' myColoc <- pics.coloc(gwas.credSet, eQTL.credSet)
+#' 
+#' @return Full colocalization info. For concise dataframe returing *only* H3 & H4 posteriors use pics.coloc.lite()
+#' @param data1  PICS sets, from pics.read or pics.download
+#' @param data2  PICS sets, from pics.read or pics.download
+#' @param rounded  [#] Decimal points to round posteriors to
+#' @param priorc1  Prior probability for colocalization with siganl for data1   Default = 1e-4
+#' @param priorc2  Prior probability for colocalization with siganl for data2   Default = 1e-4
+#' @param priorc12 Prior probability for colocalization of both signals.        Default = 1e-5
+#' @param pics1  Column name to pull PICS prob from data1 if data not from pics.* Default = "PICS_probability"
+#' @param pics2  Column name to pull PICS prob from data2 if data not from pics.* Default = "PICS_probability"
+#' @param rsid1  Column name to pull rsid from if data not from pics.*            Default = "Linked_SNP"
+#' @param rsid2  Column name to pull rsid from if data not from pics.*            Default = "Linked_SNP"
+#' @export 
+pics.coloc <- function(data1, 
                        data2,
                        pics1    = "PICS_probability", # column header for poster probabilities in data1
                        pics2    = "PICS_probability", # column header for poster probabilities in data2
@@ -41,13 +35,13 @@ coloc.pics <- function(data1,
   stopifnot(exists("data1") & exists("data2"))
   if(is.logical(data1)){
     if(is.na(data1)){
-      warning("coloc.pics- data1 is NA, skipping coloc.\n")
+      warning("pics.coloc- data1 is NA, skipping coloc.\n")
       return(list(results = NA, nvariants = NA))
     }
   }
   if(is.logical(data2)){
     if(is.na(data2)){
-      warning("coloc.pics - data2 is NA, skipping coloc.\n")
+      warning("pics.coloc - data2 is NA, skipping coloc.\n")
       return(list(results = NA, nvariants = NA))
     }
   }
@@ -71,9 +65,16 @@ coloc.pics <- function(data1,
 }
 
 #######################################################################
-# read.pics : load a PICs file that was either download from the website (copy+paste to a text file) or a saved output from download.pics(output=X)
-## Example: myCredSet <- read.pics("/full/path/to/PICs_credSet.txt")
-read.pics <- function(x){
+#' pics.read : read a PICs file 
+#' 
+#' Read into memory PICs from pics.download(output="X") or manually saved text from the website (copy+paste to a text file, not suggested)
+#' @examples 
+#' myCredSet <- pics.read("/full/path/to/PICs_credSet.txt")
+#' 
+#' @param filepath String with the filepath to the data to read. 
+#' @return PICs dataframe
+#' @export
+pics.read <- function(x){
   stopifnot(exists("x"))
   stopifnot(file.exists(x))
   # Pull the first 3 lines to check if this file was downloaded with wget (has fluff header) or was copy+pasted from gui (no fluff header)
@@ -92,27 +93,29 @@ read.pics <- function(x){
 
 
 #######################################################################
-# download.pics : Query the PICs website and get a PICs credible set for a SNP of interest
-## Example: myCredSet <- download.pics(rsid="rs6795744", pvalue = "20")
-### options:
-### rsid = SNP rsID 
-### pvalue = -log(pvalue) or full GWAS pval. Examples: "1E-20", "1e-20", "20"
-### ancestry = [EUR, ASN, AFR] Default = EUR
-### output = Full path and name for the download to be saved. Default = temporary file in memory.
-
-download.pics <- function(rsid, pvalue, ancestry = "EUR", output = NA, override = FALSE){
+#' pics.download : Query the PICs website and get a PICs credible set for a SNP of interest
+#' @examples 
+#' myCredSet <- pics.download(rsid="rs6795744", pvalue = "20")
+#' 
+#' @param rsid valid rsID. e.g. rs6795744  
+#' @param pvalue p-value for the rsid. Either scientific or -log10 base. e.g. "1E-20", "1e-20", or "20"
+#' @param ancestry = [EUR, ASN, AFR] Default = EUR
+#' @param output Specify path and name for the download to be saved to. Default = temporary file.
+#' @return PICs credible set
+#' @export
+pics.download <- function(rsid, pvalue, ancestry = "EUR", output = NA, override = FALSE){
   stopifnot(exists("rsid") & exists("pvalue"))
   if(grepl("\\d\\.?[eE]\\-\\d+", pvalue, perl=TRUE)){
     pvalue <- -log10(pvalue)
   }
   picsFile <- if(!is.na(output)) output else tempfile() 
-  f <- CFILE(picsFile, mode="wb")
+  f <- CFILE(picsFile, mode = "wb")
   url <- paste('http://pubs.broadinstitute.org/cgi-bin/finemapping/picscgi.pl?command1=', rsid, '&command2=', pvalue, '&command3=', ancestry, sep = "")
   curlPerform(url = url, writedata = f@ref)
   close(f)
-  res <- read.pics(picsFile)
-  if(!length(res$Linked_SNP)>1 & !override){
-    if(options("warn")>0){
+  res <- pics.read(picsFile)
+  if(!length(res$Linked_SNP) > 1 & !override){
+    if(options("warn") > 0){
       warning("PICs returned only 1 causal SNP. This is most likely b/c the query rsID wasn't in 1KGp1 used for PICs.\n To confirm that there is 1 causal SNP use the PICs website and HaploReg.\n If you are sure 1 causal SNP is correct, use override=TRUE\n");
     }
     return(NA)
@@ -123,19 +126,21 @@ download.pics <- function(rsid, pvalue, ancestry = "EUR", output = NA, override 
 #######################################################################
 
 #######################################################################
-# coloc.pics.lite : Test for colocalization of two PICS sets
-## Example: myColoc <- coloc.pics.lite(gwas.credSet, eQTL.credSet)
-## Returns only H3 & H4 posteriors
-## options:
-### data1, data2 = PICS sets from read.pics or download.pics
-### pics1, pics2 = column name to pull PICS prob from. Default = "PICS_probability"
-### rsid1, rsid2 = column name to pull rsid from.      Default = "Linked_SNP"
-### rounded  = [#] Decimal points to round posteriors to
-### priorc1  = Prior probability for colocalization with siganl for data1  Default = 1e-4
-### priorc2  = Prior probability for colocalization with siganl for data2 Default = 1e-4
-### priorc12 = Prior probability for colocalization of both signals.   Default = 1e-5
-# Note: Adapted from Toby Johnson's code, which was adapted from Giambartolomei et al. 2014 colocalisation method
-coloc.pics.lite <- function(data1, 
+#' pics.coloc.lite : Test for colocalization of two PICS sets
+#' 
+#' Same arguements as \code{\link{pics.coloc}}, return object is the only difference.
+#' @examples 
+#' myColoc  <- pics.coloc(gwas.credSet, eQTL.credSet)
+#' 
+#' @examples 
+#' myColocs <- data %>% group_by() %>% do(pics.coloc.lite(.$gwas_pics %>% .[[1]], .$eqtl_pics %>% .[[1]]))
+#' 
+#' @return H3 & H4 posterior colocalization info. For concise dataframe returing *only* H3 & H4 posteriors use pics.coloc.lite()
+#' @param data1  PICS sets, from pics.read or pics.download
+#' @param data2  PICS sets, from pics.read or pics.download
+#' @return H3 & H4
+#' @export
+pics.coloc.lite <- function(data1, 
                        data2,
                        pics1    = "PICS_probability", # column header for poster probabilities in data1
                        pics2    = "PICS_probability", # column header for poster probabilities in data2
@@ -149,16 +154,19 @@ coloc.pics.lite <- function(data1,
   stopifnot(exists("data1") & exists("data2"))
   if(is.logical(data1)){
     if(is.na(data1)){
-      if(options("warn")>0){warning("coloc.pics - data1 is NA, skipping coloc.\n");}
+      if(options("warn")>0){warning("pics.coloc - data1 is NA, skipping coloc.\n");}
       return(data.frame(H3 = NA, H4 = NA))
     }
   }
   if(is.logical(data2)){
     if(is.na(data2)){
-      if(options("warn")>0){warning("coloc.pics - data2 is NA, skipping coloc.\n");}
+      if(options("warn")>0){warning("pics.coloc - data2 is NA, skipping coloc.\n");}
       return(data.frame(H3 = NA, H4 = NA))
     }
   }
+  # Progress bar
+  # if ((!is.null(.pb)) && inherits(.pb, "Progress") && (.pb$i < .pb$n)) .pb$tick()$print()
+
   pics <- .harmonize.pics(data1, 
                           data2, 
                           opts <- data.frame(rsid1 = rsid1, rsid2 = rsid2, pics1 = pics1, pics2 = pics2, stringsAsFactors = FALSE))

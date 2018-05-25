@@ -87,10 +87,10 @@ snp_attributes = c("refsnp_id", "chr_name", "chrom_start", "chrom_end" )
 
 if(!is.null(opt$input)){
   cat("\tReading in PICs credible set\n", sep="", file=stderr())
-  picsIn <- read.pics(opt$input)
+  picsIn <- pics.read(opt$input)
 } else {
   cat("\tCalculating PICs credible set\n", sep="", file=stderr())
-  picsIn <- download.pics(rsid = opt$rsid, pvalue = -log10(opt$pval), ancestry = opt$ethnicity)
+  picsIn <- pics.download(rsid = opt$rsid, pvalue = -log10(opt$pval), ancestry = opt$ethnicity)
 }
 if(is.logical(picsIn)){
   if(is.na(picsIn)){
