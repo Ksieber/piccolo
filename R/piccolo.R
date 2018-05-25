@@ -1,8 +1,5 @@
 suppressMessages(library(data.table))
 suppressMessages(library(RCurl))
-if(options("warn")>0){
-  warning("If you are behind a firewall and plan to use pics.download() make sure to set RCurlOptions\n  Example: options(RCurlOptions = list(proxy=\"gskproxy.gsk.com:800\", proxyuserpwd=\"USER:PW\"))");
-}
 #' pics.coloc : Test for colocalization of two PICS sets
 #' Adapted from [Toby Johnson's code](https://github.com/tobyjohnson/gtx/blob/master/R/abf.R "Toby's coloc in R")
 #' Which was adapted from [Giambartolomei et al. 2014](https://www.ncbi.nlm.nih.gov/pubmed/24830394 "Giambartolomei et al. 2014") colocalization method
