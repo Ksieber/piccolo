@@ -1,6 +1,6 @@
 Package: piccolo
 Title: Estimate Colocalization Gentic Signals
-Version: 0.0.0.9000
+Version: 0.9
 Authors@R: person("Karsten", "Sieber", email = "karsten.b.sieber@gsk.com", role = c("aut", "cre"))
 Description: Suit of functions to download PICs credible sets, and estimate the colocalization 
     of any two genetic signals. Ideal for testing colocalizatino of GWAS, eQTL, or pQTLs 
