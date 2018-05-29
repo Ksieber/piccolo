@@ -106,10 +106,10 @@ pics.download <- function(rsid, pvalue, ancestry = "EUR", output = NA, override 
     pvalue <- -log10(pvalue)
   }
   picsFile <- if(!is.na(output)) output else tempfile() 
-  f <- CFILE(picsFile, mode = "wb")
+  fileHandle <- CFILE(picsFile, mode = "wb")
   url <- paste('http://pubs.broadinstitute.org/cgi-bin/finemapping/picscgi.pl?command1=', rsid, '&command2=', pvalue, '&command3=', ancestry, sep = "")
-  curlPerform(url = url, writedata = f@ref)
-  close(f)
+  curlPerform(url = url, writedata = fileHandle@ref)
+  close(fileHandle)
   res <- pics.read(picsFile)
   if(!length(res$Linked_SNP) > 1 & !override){
     if(options("warn") > 0){
