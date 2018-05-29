@@ -70,6 +70,7 @@ pics.coloc <- function(data1,
 #' 
 #' @param filepath String with the filepath to the data to read. 
 #' @return PICs dataframe
+#' @import data.table
 #' @export
 pics.read <- function(x){
   stopifnot(exists("x"))
@@ -79,10 +80,10 @@ pics.read <- function(x){
   head <- readLines(fh, n=3)
   close(fh)
   if(grepl("^\\<pre\\>", head[1], perl = TRUE) & grepl("^Index_SNP", head[1], perl = TRUE)){
-    pics <- fread(file=x, header=TRUE, sep="\t", skip = 2)
+    pics <- data.table::fread(file=x, header=TRUE, sep="\t", skip = 2)
   }
   else {
-    pics <- fread(file=x, header=TRUE, sep="\t")
+    pics <- data.table::fread(file=x, header=TRUE, sep="\t")
   }
   return(pics)
 }
@@ -99,6 +100,7 @@ pics.read <- function(x){
 #' @param ancestry = [EUR, ASN, AFR] Default = EUR
 #' @param output Specify path and name for the download to be saved to. Default = temporary file.
 #' @return PICs credible set
+#' @import RCurl
 #' @export
 pics.download <- function(rsid, pvalue, ancestry = "EUR", output = NA, override = FALSE){
   stopifnot(exists("rsid") & exists("pvalue"))
@@ -106,10 +108,10 @@ pics.download <- function(rsid, pvalue, ancestry = "EUR", output = NA, override 
     pvalue <- -log10(pvalue)
   }
   picsFile <- if(!is.na(output)) output else tempfile() 
-  fileHandle <- CFILE(picsFile, mode = "wb")
+  fileHandle <- RCurl::CFILE(picsFile, mode = "wb")
   url <- paste('http://pubs.broadinstitute.org/cgi-bin/finemapping/picscgi.pl?command1=', rsid, '&command2=', pvalue, '&command3=', ancestry, sep = "")
   curlPerform(url = url, writedata = fileHandle@ref)
-  close(fileHandle)
+  RCurl::close(fileHandle)
   res <- pics.read(picsFile)
   if(!length(res$Linked_SNP) > 1 & !override){
     if(options("warn") > 0){

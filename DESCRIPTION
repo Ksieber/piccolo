@@ -16,3 +16,4 @@ Suggests:
     RSQLite,
     stringr,
     tidyverse
+LazyData: FALSE
