@@ -70,7 +70,7 @@ pics.coloc <- function(data1,
 #' @return PICs dataframe
 #' @importFrom data.table fread
 #' @export
-pics.read <- function(x){
+pics.read <- function(x, override = FALSE){
   stopifnot(exists("x"))
   stopifnot(file.exists(x))
   # Pull the first 3 lines to check if this file was downloaded with wget (has fluff header) or was copy+pasted from gui (no fluff header)
@@ -81,7 +81,13 @@ pics.read <- function(x){
     pics <- data.table::fread(file=x, header=TRUE, sep="\t", skip = 2)
   }
   else {
-    pics <- data.table::fread(file=x, header=TRUE, sep="\t")
+    pics <- data.table::fread(file = x, header = TRUE, sep = "\t")
+  }
+  if(nrow(pics) <= 1 & !override){
+    if(options("warn") > 0){
+      warning("PICs returned only 1 causal SNP. This is most likely b/c the query rsID wasn't in 1KGp1 used for PICs.\n To confirm that there is 1 causal SNP use the PICs website and HaploReg.\n If you are sure 1 causal SNP is correct, use override=TRUE\n");
+    }
+    return(NA)
   }
   return(pics)
 }
@@ -102,7 +108,7 @@ pics.read <- function(x){
 #' @importFrom RCurl curlPerform
 #' @importFrom RCurl close
 #' @export
-pics.download <- function(rsid, pvalue, ancestry = "EUR", output = NA, override = FALSE){
+pics.download <- function(rsid, pvalue, ancestry = "EUR", output = NA){
   stopifnot(exists("rsid") & exists("pvalue"))
   if(grepl("\\d\\.?[eE]\\-\\d+", pvalue, perl=TRUE)){
     pvalue <- -log10(pvalue)
@@ -112,13 +118,7 @@ pics.download <- function(rsid, pvalue, ancestry = "EUR", output = NA, override 
   url <- paste('http://pubs.broadinstitute.org/cgi-bin/finemapping/picscgi.pl?command1=', rsid, '&command2=', pvalue, '&command3=', ancestry, sep = "")
   RCurl::curlPerform(url = url, writedata = fileHandle@ref)
   RCurl::close(fileHandle)
-  res <- piccolo::pics.read(picsFile)
-  if(!length(res$Linked_SNP) > 1 & !override){
-    if(options("warn") > 0){
-      warning("PICs returned only 1 causal SNP. This is most likely b/c the query rsID wasn't in 1KGp1 used for PICs.\n To confirm that there is 1 causal SNP use the PICs website and HaploReg.\n If you are sure 1 causal SNP is correct, use override=TRUE\n");
-    }
-    return(NA)
-  }
+  res <- pics.read(picsFile)
   if (is.na(output)) unlink(picsFile)
   return(res)
 }
