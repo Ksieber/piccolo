@@ -69,6 +69,3 @@ Load a PICs file that was either download from the website (copy+paste to a text
 
 ## Known Bugs:  
  * If the rsID is not in the imputation used by PICs (1KGp1) then it returns the input rsID as the 1 causal SNP. This is almost certainly an erroneous credible set. This will also occur with rsIDs that do not exist. By default, pics.download() return NA.   
- 
- ## colocPics_GTEx.R
- This script will take input genetic signals and colocalize them with all GTEx eQTLs. This can only be run on the GSK filesystem currently. Use --help for options. 
