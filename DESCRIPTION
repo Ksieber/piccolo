@@ -5,7 +5,7 @@ Authors@R: person("Karsten", "Sieber", email = "karsten.b.sieber@gsk.com", role 
 Description: Suit of functions to download PICs credible sets, and estimate the colocalization 
     of any two genetic signals. Ideal for testing colocalizatino of GWAS, eQTL, or pQTLs 
     without access to full summary stats for proper colocalization. See pmid: TBD. 
-Depends: R (>= 3.3.3)
+Depends: R (>= 3.3.0)
 License: What license is it under?
 Encoding: UTF-8
 Imports:
