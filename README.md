@@ -53,12 +53,11 @@ Query the [PICs website](http://pubs.broadinstitute.org/pubs/finemapping/ "PICs"
 |pvalue 	| pvalue or -log10(pvalue). 				   | Examples: -log10(1.23E-45) or 45
 |ancestry 	| [EUR, ASN, AFR] 				  				   | "EUR"
 |output 	| Full path and name for the download to be saved. | held in memory
-|override | If TRUE, use cred sets with 1 causal SNP. *CAUTION* using this. Read below "Known Bugs". | FALSE
 #### Note:
  * Returns a dataframe with default colnames as pic[1|2]="PICS_probability" & rsid[1|2]="Linked_SNP" that pics.coloc anticipates as default. 
  * For pics.download() to work behind a proxy use this code in an R session in your ~/.Renviron. 
  ```
- options(RCurlOptions = list(proxy="proxy.URL:PORT", proxyuserpwd="ID:PW", useragent = "R-pics.coloc"))
+ options(RCurlOptions = list(proxy="proxy.URL:PORT", proxyuserpwd="ID:PW"))
  ```
 ***
 
