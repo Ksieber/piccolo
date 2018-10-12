@@ -23,8 +23,8 @@ Test for colocalization of two PICS credible sets
 |pics1, pics2 | column name to pull PICS prob from. 					   | "PICS_probability"
 |rsid1, rsid2 | column name to pull rsid from. 							   | "Linked_SNP"
 |rounded  	  | [#] Decimal points to round posteriors to. 				   |
-|priorc1  	  | Prior probability for colocalization with siganl for data1 | 1e-4
-|priorc2  	  | Prior probability for colocalization with siganl for data2 | 1e-4 
+|priorc1  	  | Prior probability for a siganl in data1 | 1e-4
+|priorc2  	  | Prior probability for a siganl in data2 | 1e-4 
 |priorc12 	  | Prior probability for colocalization of both signals.      | 1e-5   
 #### Note:   
  * Returns full coloc object.  
