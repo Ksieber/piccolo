@@ -10,6 +10,7 @@ gwas_credSet <- pics.download(rsid="rs123", pvalue=-log10(1.23E-45))
 eQTL_credSet <- pics.read("/full/path/to/pics.txt")
 myColoc      <- pics.coloc(gwas_credSet, eQTL_credSet)
 ```
+See the pinned issue for a pptx showing further illustrating an example.  Also available [here](https://github.com/Ksieber/piccolo/files/4041189/piccolo_info.pptx "Example slide deck")
 ***
 
 
